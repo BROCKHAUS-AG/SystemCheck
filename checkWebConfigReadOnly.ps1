@@ -1,9 +1,9 @@
 function BagCheckWebConfigReadOnly{
     
     param(
-			[bool]$Path="D:\tfs\",
-			[bool]$Folder1="WebUI",
-			[bool]$Folder2="WebUI",
+			[string]$Path="D:\tfs\",
+			[string]$Folder1="WebUI",
+			[string]$Folder2="WebUI",
 			[bool]$Debug=$false,
 			[bool]$Fix=$false)
 	
