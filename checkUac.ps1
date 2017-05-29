@@ -1,6 +1,8 @@
-# Author(s)    			: paul mizel
+# Author(s)    			: Paul Mizel
 # Company				: BROCKHAUS AG
 # Year					: 2017
+# Source				: https://github.com/BROCKHAUS-AG/SystemCheck
+
 
 function BagCheckUac{
     

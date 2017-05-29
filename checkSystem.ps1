@@ -1,7 +1,11 @@
-# Author(s)    			: paul mizel
+# Author(s)    			: Paul Mizel
 # Company				: BROCKHAUS AG
 # Year					: 2017
+# Source				: https://github.com/BROCKHAUS-AG/SystemCheck
 
+
+# sample #
+# Get-Bits
 Function Get-Bits(){
 	If(-NOT [Environment]::Is64BitProcess)
 	{
@@ -13,8 +17,9 @@ Function Get-Bits(){
 	}    
 }
 
-#Get-Bits
-
+# sample #
+# Write-Line -Title ("SYSTEM CHECK - " + (Get-Date).Year + " " +(Get-Bits))
+# Write-Line -Info "Check Services"
 function Write-Line {
      Param(
 	    $title="",

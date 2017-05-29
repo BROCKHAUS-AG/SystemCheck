@@ -1,6 +1,8 @@
-# Author(s)    			: paul mizel
+# Author(s)    			: Paul Mizel
 # Company				: BROCKHAUS AG
 # Year					: 2017
+# Source				: https://github.com/BROCKHAUS-AG/SystemCheck
+
 
 function BagCheckAdminUser{
     
@@ -17,10 +19,11 @@ function BagCheckAdminUser{
 		{		
 			write-host "ERROR: ("  $_currentUser.Identity.Name ") You do not have Administrator rights." -ForegroundColor Red
 			If($Fix)
-			{
-				write-host "FIX: ("  $_currentUser.Identity.Name ") Add to Administrators Group" -ForegroundColor Yellow
-				
+			{				
 				Add-LocalUser 				
+				write-host "FIX: ("  $_currentUser.Identity.Name ") Add to Administrators Group" -ForegroundColor Yellow
+				Add-LocalUser -group RemoteDesktopBenutzer			
+				write-host "FIX: ("  $_currentUser.Identity.Name ") Add to RemoteDesktopBenutzer Group" -ForegroundColor Yellow				
 			}
 		}
 		Else
@@ -45,5 +48,5 @@ function Add-LocalUser {
         $userdomain=$env:userdomain,
         $username=$env:username
     )
-        ([ADSI]"WinNT://$computer/$group,group").psbase.Invoke("Add",([ADSI]"WinNT://$domain/$user").path)
+    ([ADSI]"WinNT://$computer/$group,group").psbase.Invoke("Add",([ADSI]"WinNT://$domain/$user").path)
 }

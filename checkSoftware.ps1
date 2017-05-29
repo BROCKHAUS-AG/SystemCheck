@@ -1,6 +1,12 @@
+# Author(s)    			: Paul Mizel
+# Company				: BROCKHAUS AG
+# Year					: 2017
+# Source				: https://github.com/BROCKHAUS-AG/SystemCheck
 
 
-
+# sample #
+# $my_softwarelist = BagCheckSoftware-Init
+# Write-Host ($my_softwarelist | Where-Object {$_.Publisher -notlike '*Microsoft*'} | Format-Table | Out-String) |more
 function BagCheckSoftware-Init{
     $Wow6432Node= Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |`
     	Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | `
@@ -13,6 +19,8 @@ function BagCheckSoftware-Init{
     return $Wow6432Node + $EmptyNode | Sort-Object -Property DisplayName
 }
 
+# sample #
+# BagCheckSoftware -Name "Microsoft .NET Framework 4.5.1*" -Version "4.5.51641" -List $softwarelist -Debug $debug
 function BagCheckSoftware{
     
     param(
