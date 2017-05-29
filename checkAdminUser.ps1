@@ -20,9 +20,9 @@ function BagCheckAdminUser{
 			write-host "ERROR: ("  $_currentUser.Identity.Name ") You do not have Administrator rights." -ForegroundColor Red
 			If($Fix)
 			{				
-				Add-LocalUser 				
+				Add-LocalUserToGroup  				
 				write-host "FIX: ("  $_currentUser.Identity.Name ") Add to Administrators Group" -ForegroundColor Yellow
-				Add-LocalUser -group RemoteDesktopBenutzer			
+				Add-LocalUserToGroup -group RemoteDesktopBenutzer			
 				write-host "FIX: ("  $_currentUser.Identity.Name ") Add to RemoteDesktopBenutzer Group" -ForegroundColor Yellow				
 			}
 		}
@@ -41,7 +41,7 @@ function BagCheckAdminUser{
 } 
  
  
-function Add-LocalUser {
+function Add-LocalUserToGroup  {
      Param(
         $computer=$env:computername,
         $group='Administratoren',
@@ -50,3 +50,35 @@ function Add-LocalUser {
     )
     ([ADSI]"WinNT://$computer/$group,group").psbase.Invoke("Add",([ADSI]"WinNT://$domain/$user").path)
 }
+
+function Add-DomainUserToGroup 
+{ 
+[cmdletBinding()] 
+Param( 
+[Parameter(Mandatory=$False)] 
+[string]$computer, 
+[Parameter(Mandatory=$False)] 
+[string]$domain, 
+[Parameter(Mandatory=$True)] 
+[string]$group, 
+[Parameter(Mandatory=$True)] 
+[string]$user 
+) 
+
+if([string]::IsNullOrEmpty($computer))
+{
+	$computer = [System.Net.Dns]::GetHostByName(($env:computerName)).HostName;
+}
+
+if([string]::IsNullOrEmpty($domain))
+{
+	$domain = (Get-WmiObject win32_computersystem).Domain;
+}
+
+$de = [ADSI]“WinNT://$computer/$group,group”
+$adUser = [ADSI]“WinNT://$domain/$user”
+$path = ([ADSI]“WinNT://$domain/$user”).path
+$de.psbase.Invoke(“Add”, $path) 
+
+write-host "User " $adUser.Name " added to group " $de.Name
+} 
