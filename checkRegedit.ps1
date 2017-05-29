@@ -38,7 +38,8 @@ function BagCheckRegedit{
 function BagCheckRegedit-DisableAttachSecurityWarning{
     
     param([bool]$Debug=$false,
-	      [bool]$Fix=$false,
+	      [bool]$Fix=$false,		  
+		  [String]$Text="DisableAttachSecurityWarning",
 		  [object]$Path="Registry::HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\14.0\Debugger",
 		  [object]$Compare=1
 		  )
@@ -57,7 +58,7 @@ function BagCheckRegedit-DisableAttachSecurityWarning{
 		
 		If ($result.DisableAttachSecurityWarning -eq $Compare)
 		{		
-			write-host "OK ( Regedit DisableAttachSecurityWarning : 1)" -ForegroundColor Green
+			write-host ("OK ( Regedit "+ $Text +" : 1)") -ForegroundColor Green
 		}
 		Else
 		{

@@ -40,8 +40,6 @@ function BagCheckSoftware{
 			
 				$founditem = $item			
 				$found = 0
-
-                
                 
 				if($item.DisplayVersion -eq $Version -OR $Version -eq "")
 				{
@@ -58,10 +56,10 @@ function BagCheckSoftware{
 				write-host "NOT FOUND ("  $Name ")" -ForegroundColor Red
 			}
 			0  {
-				write-host "WRN ("  $founditem.DisplayName ") V: '" $founditem.DisplayVersion "' <> " $Version  -ForegroundColor Yellow
+				write-host "WRN ("  $founditem.DisplayName ") Found: '" $founditem.DisplayVersion "' <>  " $Version  -ForegroundColor Yellow
 			}
 			1  {
-				write-host "OK (" $founditem.DisplayName ") V: " $founditem.DisplayVersion  -ForegroundColor Green
+				write-host "OK (" $founditem.DisplayName ") OK: " $founditem.DisplayVersion  -ForegroundColor Green
 			}
 			default {
 				write-host "ERROR (" $Name ")" -ForegroundColor Red
