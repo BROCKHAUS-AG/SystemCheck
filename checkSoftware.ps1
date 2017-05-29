@@ -49,10 +49,24 @@ function BagCheckSoftware{
 				$founditem = $item			
 				$found = 0
                 
-				if($item.DisplayVersion -eq $Version -OR $Version -eq "")
+				if($Version -like "*,*")
 				{
-					$found = 1
+					$Version.Split(",") | ForEach {
+						$_version_item=$_;
+						if($item.DisplayVersion -eq $_version_item -OR $_version_item -eq "")
+						{
+							$found = 1
+						}
+					}
 				}
+				else 
+				{
+					if($item.DisplayVersion -eq $Version -OR $Version -eq "")
+					{
+						$found = 1
+					}
+				}
+									
 			}			
 		}	
 		
