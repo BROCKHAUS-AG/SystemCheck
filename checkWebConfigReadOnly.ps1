@@ -1,7 +1,11 @@
 function BagCheckWebConfigReadOnly{
     
-    param([bool]$Debug=$false,
-		  [bool]$Fix=$false)
+    param(
+			[bool]$Path="D:\tfs\",
+			[bool]$Folder1="WebUI",
+			[bool]$Folder2="WebUI",
+			[bool]$Debug=$false,
+			[bool]$Fix=$false)
 	
 	if(-NOT $Debug){ $ErrorActionPreference = "Stop" }
 	
@@ -10,8 +14,8 @@ function BagCheckWebConfigReadOnly{
 		$items=get-childitem "D:\tfs\" -Recurse -Filter "web.config" -Attributes ReadOnly		
 		ForEach($item in $items)
 		{
-			if(-NOT ($item.DirectoryName.EndsWith(".WebUI","CurrentCultureIgnoreCase") -OR 
-			         $item.DirectoryName.EndsWith(".WebUI","CurrentCultureIgnoreCase")))
+			if(-NOT ($item.DirectoryName.EndsWith($Folder1,"CurrentCultureIgnoreCase") -OR 
+			         $item.DirectoryName.EndsWith($Folder2,"CurrentCultureIgnoreCase")))
 			{continue}
 			if($Debug)
 			{
