@@ -91,7 +91,7 @@ function BagCheckComPlus
 			
 				if($Activation -ge 0){
 					if($Activation -eq $founditem.Activation){
-						write-host "OK (" $founditem.ComponentName ") OK: " $founditem.Activation  -ForegroundColor Green
+						write-host "OK (" $founditem.ComponentName ") OK: Activation: " $founditem.Activation  -ForegroundColor Green
 					}
 					else{
 						write-host "WRN ("  $founditem.ComponentName ") Found: '" $founditem.Activation "' <>  " $Activation  -ForegroundColor Yellow
@@ -100,7 +100,7 @@ function BagCheckComPlus
 				
 				if($Identity -ne ""){
 					if($Identity -eq $founditem.Identity){
-						write-host "OK (" $founditem.ComponentName ") OK: " $founditem.Identity  -ForegroundColor Green
+						write-host "OK (" $founditem.ComponentName ") OK: Identity: " $founditem.Identity  -ForegroundColor Green
 					}
 					else{
 						write-host "WRN ("  $founditem.ComponentName ") Found: '" $founditem.Identity "' <>  " $Identity  -ForegroundColor Yellow
@@ -109,7 +109,7 @@ function BagCheckComPlus
 				
 				if($DLL){
 					if([System.IO.File]::Exists($founditem.DLL)){
-						write-host "OK (" $founditem.ComponentName ") OK: " $founditem.DLL  -ForegroundColor Green
+						write-host "OK (" $founditem.ComponentName ") OK: DLL:" $founditem.DLL  -ForegroundColor Green
 					}
 					else{
 						write-host "WRN ("  $founditem.ComponentName ") File not found: '" $founditem.DLL "'"  -ForegroundColor Yellow
