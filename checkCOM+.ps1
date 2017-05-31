@@ -48,16 +48,17 @@ If($global:GLOBAL -ne $true)
   }
 }
 
-
+# sample 
+# $compluslist = BagCheckComPlus-Init
+# BagCheckComPlus -List $compluslist -Name "EventPublisher.EventPublisher" -Identity LocalSystem -Activation 1 -DLL
 function BagCheckComPlus
 { 
 	#[cmdletBinding()] 
 	param([object]$List,
 		  [string]$Name,
-
 	      [int]$Activation=-1,
           [string]$Identity="",
-          [bool]$DLL=$false,
+          [switch]$DLL=$false,
 	      [bool]$Debug=$false,
 		  [bool]$Fix=$false)
 		  
@@ -72,7 +73,10 @@ function BagCheckComPlus
 		{
 			if($item.ApplicationName -like $Name -OR $item.ComponentName -like $Name)
 			{
-				Write-Host ($item | Format-List | Out-String)
+				If($Debug)
+				{
+					Write-Host ($item | Format-List | Out-String)
+				}
 				$founditem = $item;
 				$found = 0
 			}
@@ -84,10 +88,34 @@ function BagCheckComPlus
 				write-host "NOT FOUND ("  $Name ")" -ForegroundColor Red
 			}
 			0  {
-				write-host "WRN ("  $founditem.ComponentName ") Found: '" $founditem.DisplayVersion "' <>  " $Version  -ForegroundColor Yellow
-			}
-			1  {
-				write-host "OK (" $founditem.ComponentName ") OK: " $founditem.DisplayVersion  -ForegroundColor Green
+			
+				if($Activation -ge 0){
+					if($Activation -eq $founditem.Activation){
+						write-host "OK (" $founditem.ComponentName ") OK: " $founditem.Activation  -ForegroundColor Green
+					}
+					else{
+						write-host "WRN ("  $founditem.ComponentName ") Found: '" $founditem.Activation "' <>  " $Activation  -ForegroundColor Yellow
+					}
+				}
+				
+				if($Identity -ne ""){
+					if($Identity -eq $founditem.Identity){
+						write-host "OK (" $founditem.ComponentName ") OK: " $founditem.Identity  -ForegroundColor Green
+					}
+					else{
+						write-host "WRN ("  $founditem.ComponentName ") Found: '" $founditem.Identity "' <>  " $Identity  -ForegroundColor Yellow
+					}
+				}
+				
+				if($DLL){
+					if([System.IO.File]::Exists($founditem.DLL)){
+						write-host "OK (" $founditem.ComponentName ") OK: " $founditem.DLL  -ForegroundColor Green
+					}
+					else{
+						write-host "WRN ("  $founditem.ComponentName ") File not found: '" $founditem.DLL "'"  -ForegroundColor Yellow
+					}
+				}
+				
 			}
 			default {
 				write-host "ERROR (" $Name ")" -ForegroundColor Red
@@ -101,14 +129,4 @@ function BagCheckComPlus
 			write-host "Ex:COM+,M: " $Name " - " $_.Exception.Message "" -ForegroundColor Red
 		}
 	}
-}
-
-$compluslist = BagCheckComPlus-Init
-BagCheckComPlus -List $compluslist -Name "Itergo.Ecsa*"
-BagCheckComPlus -List $compluslist -Name "EventPublisher.EventPublisher" -Identity LocalSystem -Activation 1
-
-
-Write-Host "Press any key to continue ..."
-If(-NOT $psISE){
-    $x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }

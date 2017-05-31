@@ -9,14 +9,27 @@
 # Write-Host ($my_softwarelist | Where-Object {$_.Publisher -notlike '*Microsoft*'} | Format-Table | Out-String) |more
 function BagCheckSoftware-Init{
     $Wow6432Node= Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |`
-    	Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | `
+    	Select-Object DisplayName, DisplayVersion, Publisher | `
 		Where-Object { ![string]::IsNullOrEmpty($_.DisplayName) -and !($_.DisplayName -like "*Hotfix*") -and !($_.DisplayName -like "*Update*")}
 		#Sort-Object -Property DisplayName
 	$EmptyNode= Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |`
-    	Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | `
+    	Select-Object DisplayName, DisplayVersion, Publisher | `
 		Where-Object { ![string]::IsNullOrEmpty($_.DisplayName) -and !($_.DisplayName -like "*Hotfix*") -and !($_.DisplayName -like "*Update*")}
 		#Sort-Object -Property DisplayName
     return $Wow6432Node + $EmptyNode | Sort-Object -Property DisplayName
+}
+
+If($global:GLOBAL -ne $true)
+{
+  Write-Host "Software"
+
+  $my_softwarelist = BagCheckSoftware-Init
+  Write-Host ($my_softwarelist | Where-Object {$_.Publisher -notlike '*Microsoft*'} | 
+  Format-List | Out-String)
+  #DisplayName, DisplayVersion -auto
+  
+  Write-Host "Press any key to continue ..."
+  $x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
 
 # sample #
