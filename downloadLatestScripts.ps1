@@ -3,12 +3,17 @@
 # Year					: 2017
 # Source				: https://github.com/BROCKHAUS-AG/SystemCheck
 
+param([switch]$downloadLatestScripts = $false) # -downloadLatestScripts
+
 $wc=New-Object System.Net.WebClient
 $creds=Get-Credential
 $wc.Proxy.Credentials=$creds
 
 write-host "Download checkAdminUser"
 $wc.DownloadFile("https://raw.githubusercontent.com/BROCKHAUS-AG/SystemCheck/master/checkAdminUser.ps1","checkAdminUser.ps1") 
+
+write-host "Download checkAdminUser"
+$wc.DownloadFile("https://raw.githubusercontent.com/BROCKHAUS-AG/SystemCheck/master/checkCOM+.ps1","checkCOM+.ps1") 
 
 write-host "Download checkRegedit"
 $wc.DownloadFile("https://raw.githubusercontent.com/BROCKHAUS-AG/SystemCheck/master/checkRegedit.ps1","checkRegedit.ps1") 
@@ -28,11 +33,14 @@ $wc.DownloadFile("https://raw.githubusercontent.com/BROCKHAUS-AG/SystemCheck/mas
 write-host "Download checkWebConfigReadOnly"
 $wc.DownloadFile("https://raw.githubusercontent.com/BROCKHAUS-AG/SystemCheck/master/checkWebConfigReadOnly.ps1","checkWebConfigReadOnly.ps1") 
 
+If($downloadLatestScripts)
+{
 write-host "Download downloadLatestScripts"
 $wc.DownloadFile("https://raw.githubusercontent.com/BROCKHAUS-AG/SystemCheck/master/downloadLatestScripts.ps1","downloadLatestScripts.ps1") 
 
 write-host "Download README.md"
 $wc.DownloadFile("https://raw.githubusercontent.com/BROCKHAUS-AG/SystemCheck/master/README.md","README.md") 
+}
 
 Write-Host
 Write-Host "Press any key to continue ..."
