@@ -32,7 +32,7 @@ function BagCheckConfig{
                 $part = $part[$p];
             }
             else{
-                write-host "ERROR: (" $p ") Tag not found." -ForegroundColor Red
+                write-host "ERROR: "$Name" <"$p">-Tag not found." -ForegroundColor Red
                 return;
             }
         }
